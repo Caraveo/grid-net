@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* ─── Dark (default) ─── */
+:root,
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #a1a1a1;
+  --dim: #6b6b6b;
+  --border: rgba(255, 255, 255, 0.12);
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-2: rgba(255, 255, 255, 0.07);
+  --accent: #e8e8e8;
+  --glow: rgba(255, 255, 255, 0.08);
+  --danger: #ff6b6b;
+  --chrome: rgba(0, 0, 0, 0.92);
+  --tab-active: rgba(255, 255, 255, 0.08);
+  --tab-hover: rgba(255, 255, 255, 0.04);
+  --chip: rgba(255, 255, 255, 0.7);
+  --chip-legacy: rgba(253, 230, 138, 0.75);
+  --btn-primary-bg: #ffffff;
+  --btn-primary-fg: #000000;
+  --btn-primary-hover: #e8e8e8;
+  --selection-bg: rgba(255, 255, 255, 0.2);
+  --selection-fg: #ffffff;
+  --grid-line: rgba(255, 255, 255, 0.03);
+  --hero-glow-a: rgba(255, 255, 255, 0.07);
+  --hero-glow-b: rgba(255, 255, 255, 0.04);
+  --noise-opacity: 0.03;
+  --status-ok: #86efac;
+  --chrome-h: 48px;
+  --tab-h: 44px;
+  --status-h: 28px;
+}
+
+/* ─── Light ─── */
+html[data-theme="light"] {
+  color-scheme: light;
+  --background: #f7f7f5;
+  --foreground: #0a0a0a;
+  --muted: #5c5c5c;
+  --dim: #8a8a8a;
+  --border: rgba(0, 0, 0, 0.1);
+  --surface: rgba(0, 0, 0, 0.035);
+  --surface-2: rgba(0, 0, 0, 0.06);
+  --accent: #111111;
+  --glow: rgba(0, 0, 0, 0.04);
+  --danger: #dc2626;
+  --chrome: rgba(247, 247, 245, 0.94);
+  --tab-active: rgba(0, 0, 0, 0.07);
+  --tab-hover: rgba(0, 0, 0, 0.04);
+  --chip: rgba(0, 0, 0, 0.55);
+  --chip-legacy: rgba(146, 64, 14, 0.85);
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-fg: #ffffff;
+  --btn-primary-hover: #262626;
+  --selection-bg: rgba(0, 0, 0, 0.12);
+  --selection-fg: #0a0a0a;
+  --grid-line: rgba(0, 0, 0, 0.05);
+  --hero-glow-a: rgba(0, 0, 0, 0.04);
+  --hero-glow-b: rgba(0, 0, 0, 0.03);
+  --noise-opacity: 0.02;
+  --status-ok: #15803d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-dim: var(--dim);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-chrome: var(--chrome);
+  --color-chip: var(--chip);
+  --color-chip-legacy: var(--chip-legacy);
+  --color-status-ok: var(--status-ok);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    "Geist",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+/* Traffic-light / drag region on macOS overlay titlebar */
+.titlebar-drag {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.titlebar-no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+}
+
+.hero-glow {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 45%, var(--hero-glow-a) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, var(--hero-glow-b) 0%, transparent 60%);
+}
+
+.noise {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  background: var(--surface-2);
+  border-color: color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border-color: var(--btn-primary-bg);
+}
+
+.btn-primary:hover {
+  background: var(--btn-primary-hover);
+}
+
+.mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Soft card / panel surfaces used across pages */
+.panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 0.75rem;
+}

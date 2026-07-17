@@ -1,0 +1,6 @@
+# Copy to ~/.grid/browser/names.toml
+# Typing the label (e.g. `x`) opens grid://x.grid → origin
+
+[names]
+# x = "http://127.0.0.1:8080"
+# garage = "https://example.com"
