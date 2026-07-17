@@ -19,14 +19,22 @@ export function Help({ onGo }: Props) {
             This browser defaults to <code className="mono text-foreground/90">grid://</code>,
             not https. The mesh is the primary web.
           </p>
+          <p className="mt-2">
+            MESH registers as the system handler for{" "}
+            <code className="mono text-foreground/90">grid://</code> on macOS,
+            Windows, and Linux — so links open this app (macOS requires an
+            installed <code className="mono text-foreground/80">MESH.app</code>).
+          </p>
         </div>
 
         <div>
           <h2 className="text-sm tracking-widest text-foreground/90 uppercase">
-            Bare names
+            Realms
           </h2>
           <p className="mt-2">
-            Type a compute label — no extension required:
+            On the web you type domains. On MESH you type{" "}
+            <strong className="font-normal text-foreground/90">realms</strong> —
+            no extension required:
           </p>
           <pre className="mono mt-3 overflow-x-auto rounded-xl border border-border bg-surface p-4 text-sm text-foreground/85">
 {`x              →  grid://x.grid/
@@ -35,8 +43,8 @@ grid://x       →  grid://x.grid/
 grid://x.grid  →  grid://x.grid/`}
           </pre>
           <p className="mt-3">
-            That label is the handle for a <strong className="font-normal text-foreground/90">compute / node / published site</strong>{" "}
-            on the mesh — same mental model as{" "}
+            A <strong className="font-normal text-foreground/90">realm</strong> is
+            the mesh address for a compute / published site — same mental model as{" "}
             <code className="mono text-foreground/80">grid launch x</code>.
           </p>
         </div>

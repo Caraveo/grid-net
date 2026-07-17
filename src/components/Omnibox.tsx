@@ -71,7 +71,7 @@ export function Omnibox({ displayUrl, loading, onNavigate, onFocusChange }: Prop
         spellCheck={false}
         autoCapitalize="off"
         autoCorrect="off"
-        placeholder="type a compute · x   or   x.grid"
+        placeholder="type a realm · x → grid://x.grid"
         className="mono min-w-0 flex-1 bg-transparent text-[0.85rem] text-foreground/90 outline-none placeholder:text-dim"
         aria-label="Address"
       />

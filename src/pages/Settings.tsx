@@ -79,10 +79,10 @@ export function Settings() {
       </section>
 
       <h2 className="mt-12 mono text-[0.65rem] tracking-[0.2em] text-muted uppercase">
-        Local names
+        Local realms
       </h2>
       <p className="mt-2 text-sm text-muted">
-        Map a compute label to an origin. Typing{" "}
+        Map a realm to an origin. Typing{" "}
         <span className="mono text-foreground/80">x</span> opens that origin as{" "}
         <span className="mono text-foreground/80">grid://x.grid</span>.
       </p>

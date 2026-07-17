@@ -7,7 +7,7 @@ const LINKS = [
   { name: "registry", hint: "public computes + peers" },
   { name: "status", hint: "browser + mesh" },
   { name: "help", hint: "how grid:// works" },
-  { name: "settings", hint: "names & gateway" },
+  { name: "settings", hint: "realms & gateway" },
 ];
 
 export function Home({ onGo }: Props) {
@@ -24,15 +24,18 @@ export function Home({ onGo }: Props) {
         <h1 className="mt-5 text-[clamp(3rem,12vw,5.5rem)] font-thin leading-none tracking-[0.32em]">
           MESH
         </h1>
-        <p className="mt-5 max-w-md text-base text-foreground/55 leading-relaxed">
-          Type a compute name. Default scheme is{" "}
-          <span className="mono text-foreground/80">grid://</span>.
-          <br />
-          <span className="text-muted">
-            <span className="mono text-foreground/70">x</span>
-            {" → "}
-            <span className="mono text-foreground/70">grid://x.grid</span>
-          </span>
+        <p className="mt-6 max-w-md text-base text-foreground/55 leading-relaxed">
+          Type a realm. Default scheme is{" "}
+          <span className="mono text-foreground/85">grid://</span>.
+        </p>
+        <p className="mono mt-3 text-sm tracking-wide text-muted">
+          <span className="text-foreground/80">x</span>
+          <span className="mx-2 text-dim">→</span>
+          <span className="text-foreground/80">grid://x.grid</span>
+        </p>
+        <p className="mt-3 max-w-sm text-xs leading-relaxed text-dim">
+          On the web: domains. On MESH:{" "}
+          <span className="text-muted">realms</span>.
         </p>
 
         <div className="mt-10 flex w-full flex-col gap-2">

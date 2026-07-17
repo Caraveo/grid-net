@@ -1,15 +1,28 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Chrome } from "./components/Chrome";
 import { StatusBar } from "./components/StatusBar";
 import { TabBar } from "./components/TabBar";
 import { Viewport } from "./components/Viewport";
 import { browserStatus, navigate, registrySnapshot } from "./lib/api";
+import { deepLinkToInput, listenDeepLinks } from "./lib/deeplink";
 import { createTab, titleFromHit, type Tab } from "./lib/tabs";
 import { useTheme } from "./lib/ThemeContext";
 import type { BrowserStatus } from "./lib/types";
 
+/** Hard ceiling — never let deep-link storms allocate without bound. */
+const MAX_TABS = 32;
+
 function updateTab(tabs: Tab[], id: string, patch: Partial<Tab>): Tab[] {
   return tabs.map((t) => (t.id === id ? { ...t, ...patch } : t));
+}
+
+function isFreshHomeTab(tab: Tab): boolean {
+  return (
+    tab.history.length <= 1 &&
+    (tab.input === "home" ||
+      tab.input === "" ||
+      tab.displayUrl.startsWith("grid://home.grid"))
+  );
 }
 
 export default function App() {
@@ -20,6 +33,12 @@ export default function App() {
   const [peerCount, setPeerCount] = useState<number | null>(null);
   const [computeCount, setComputeCount] = useState<number | null>(null);
   const [phase, setPhase] = useState<string | null>(null);
+
+  // Stable id for navigation / deep links without re-subscribing listeners.
+  const activeIdRef = useRef(activeId);
+  activeIdRef.current = activeId;
+  const tabsRef = useRef(tabs);
+  tabsRef.current = tabs;
 
   const active = useMemo(
     () => tabs.find((t) => t.id === activeId) ?? tabs[0]!,
@@ -50,7 +69,7 @@ export default function App() {
         historyIndex?: number;
       },
     ) => {
-      const tabId = opts?.tabId ?? activeId;
+      const tabId = opts?.tabId ?? activeIdRef.current;
       const pushHistory = opts?.pushHistory ?? true;
 
       setTabs((prev) => updateTab(prev, tabId, { loading: true }));
@@ -94,21 +113,96 @@ export default function App() {
         );
       }
     },
-    [activeId],
+    [],
   );
 
   // Initial resolve for first tab
   useEffect(() => {
-    void go("home", { pushHistory: false, tabId: activeId });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    void go("home", { pushHistory: false, tabId: activeIdRef.current });
+  }, [go]);
 
   const newTab = useCallback(() => {
-    const tab = createTab();
-    setTabs((prev) => [...prev, tab]);
-    setActiveId(tab.id);
-    void go("home", { pushHistory: false, tabId: tab.id });
+    setTabs((prev) => {
+      if (prev.length >= MAX_TABS) {
+        console.warn(`[MESH] tab limit (${MAX_TABS}) reached`);
+        return prev;
+      }
+      const tab = createTab();
+      queueMicrotask(() => {
+        setActiveId(tab.id);
+        void go("home", { pushHistory: false, tabId: tab.id });
+      });
+      return [...prev, tab];
+    });
   }, [go]);
+
+  /**
+   * OS deep link (grid://…). Reuses the starter home tab when possible so
+   * cold-start links don't leave a blank tab behind. Never re-subscribes —
+   * handler is kept in a ref and listenDeepLinks runs once.
+   */
+  const openDeepLink = useCallback(
+    (raw: string) => {
+      const input = deepLinkToInput(raw);
+      if (!input) return;
+
+      const current = tabsRef.current;
+      const active = current.find((t) => t.id === activeIdRef.current);
+      const reuse =
+        current.length === 1 && active && isFreshHomeTab(active)
+          ? active
+          : null;
+
+      if (reuse) {
+        setActiveId(reuse.id);
+        void go(input, { pushHistory: true, tabId: reuse.id });
+        return;
+      }
+
+      if (current.length >= MAX_TABS) {
+        // Navigate the active tab instead of allocating more.
+        void go(input, { pushHistory: true, tabId: activeIdRef.current });
+        return;
+      }
+
+      const tab = createTab({
+        title: "…",
+        displayUrl: input,
+        input,
+        history: [input],
+        historyIndex: 0,
+        loading: true,
+        hit: null,
+      });
+      setTabs((prev) => {
+        if (prev.length >= MAX_TABS) return prev;
+        return [...prev, tab];
+      });
+      setActiveId(tab.id);
+      void go(input, { pushHistory: false, tabId: tab.id });
+    },
+    [go],
+  );
+
+  const openDeepLinkRef = useRef(openDeepLink);
+  openDeepLinkRef.current = openDeepLink;
+
+  // Subscribe exactly once — never re-bind when active tab changes.
+  useEffect(() => {
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    void listenDeepLinks((url) => openDeepLinkRef.current(url)).then((u) => {
+      if (cancelled) {
+        u();
+        return;
+      }
+      unsub = u;
+    });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
+  }, []);
 
   const closeTab = useCallback(
     (id: string) => {

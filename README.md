@@ -27,6 +27,28 @@ Build release:
 npm run tauri:build
 ```
 
+## OS registration: `grid://` links open MESH
+
+MESH claims the **`grid://`** URL scheme so system links open this app.
+
+| OS | How it registers | Test |
+|----|------------------|------|
+| **macOS** | Bundled `CFBundleURLTypes` via deep-link config (must **install** `.app`, ideally under `/Applications`) | `open 'grid://home.grid'` |
+| **Windows** | Runtime registry + installer (`Software\Classes\grid`) | `start grid://home.grid` |
+| **Linux** | Runtime `.desktop` handler (`x-scheme-handler/grid`) | `xdg-open 'grid://home.grid'` |
+
+Config lives in `src-tauri/tauri.conf.json` → `plugins.deep-link`.
+
+**macOS note:** Dev mode (`tauri dev`) does **not** fully register the scheme. Build and install:
+
+```bash
+npm run tauri:build
+# then open the generated MESH.app (or copy to /Applications)
+open 'grid://registry.grid'
+```
+
+Clicking `grid://…` while MESH is already running focuses the window and opens a new tab.
+
 ## Omnibox rules
 
 | You type | Opens |
