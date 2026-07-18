@@ -12,6 +12,7 @@ export interface GridUrl {
 
 export type BuiltinPage =
   | "home"
+  | "site"
   | "registry"
   | "status"
   | "help"

@@ -4,10 +4,11 @@ interface Props {
 
 const LINKS = [
   { name: "home", hint: "this page" },
+  { name: "grid", hint: "grid-compute.com · Soon..." },
   { name: "registry", hint: "public computes + peers" },
   { name: "status", hint: "browser + mesh" },
   { name: "help", hint: "how grid:// works" },
-  { name: "settings", hint: "realms & gateway" },
+  { name: "settings", hint: "appearance" },
 ];
 
 export function Home({ onGo }: Props) {

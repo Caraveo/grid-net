@@ -21,3 +21,6 @@ src-tauri/target/
 
 # Tauri
 src-tauri/gen/
+
+# Portable release staging
+release-portable/

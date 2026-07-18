@@ -216,6 +216,10 @@ async function clientNavigate(input: string): Promise<NavigateResult> {
     home: "home",
     start: "home",
     newtab: "home",
+    // grid.grid → public site (grid-compute.com)
+    grid: "site",
+    www: "site",
+    site: "site",
     registry: "registry",
     mesh: "registry",
     peers: "registry",
@@ -232,6 +236,7 @@ async function clientNavigate(input: string): Promise<NavigateResult> {
 
   type BuiltinPageAlias =
     | "home"
+    | "site"
     | "registry"
     | "status"
     | "help"

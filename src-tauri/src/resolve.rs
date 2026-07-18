@@ -10,6 +10,8 @@ use crate::url::{GridUrl, Scheme};
 #[serde(rename_all = "snake_case")]
 pub enum BuiltinPage {
     Home,
+    /// Public GRID site — https://grid-compute.com/ (grid.grid)
+    Site,
     Registry,
     Status,
     Help,
@@ -21,6 +23,8 @@ impl BuiltinPage {
     pub fn from_label(label: &str) -> Option<Self> {
         match label {
             "home" | "start" | "newtab" => Some(Self::Home),
+            // grid.grid → public site (grid-compute.com)
+            "grid" | "www" | "site" => Some(Self::Site),
             "registry" | "mesh" | "peers" | "computes" => Some(Self::Registry),
             "status" | "about" => Some(Self::Status),
             "help" | "docs" => Some(Self::Help),
@@ -168,6 +172,29 @@ mod tests {
                 ..
             }
         ));
+    }
+
+    #[test]
+    fn builtin_grid_site() {
+        for input in ["grid", "grid.grid", "grid://grid.grid/"] {
+            let u = normalize(input).unwrap();
+            let hit = resolve(
+                &u,
+                &NameTable::default(),
+                &BrowserConfig::default(),
+                &[],
+            );
+            assert!(
+                matches!(
+                    hit,
+                    ResolveHit::Builtin {
+                        page: BuiltinPage::Site,
+                        ..
+                    }
+                ),
+                "input={input} hit={hit:?}"
+            );
+        }
     }
 
     #[test]

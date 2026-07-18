@@ -4,6 +4,7 @@ import { Help } from "../pages/Help";
 import { Home } from "../pages/Home";
 import { Registry } from "../pages/Registry";
 import { Settings } from "../pages/Settings";
+import { Site } from "../pages/Site";
 import { Status } from "../pages/Status";
 
 interface Props {
@@ -30,6 +31,8 @@ export function Viewport({
       switch (hit.page) {
         case "home":
           return <Home onGo={onGo} />;
+        case "site":
+          return <Site />;
         case "registry":
           return <Registry onGo={onGo} />;
         case "status":
@@ -54,20 +57,17 @@ export function Viewport({
           <p className="mono text-[0.65rem] tracking-[0.25em] text-muted uppercase">
             grid://{hit.label}.grid
           </p>
-          <h1 className="mt-4 text-2xl font-thin">Local compute</h1>
+          <h1 className="mt-4 text-2xl font-thin">{hit.label}</h1>
           <p className="mt-3 max-w-md text-foreground/55">
-            Resolved via names.toml. Sandboxed content fetch lands in the next
-            release — origin ready:
-          </p>
-          <p className="mono mt-6 break-all rounded-xl border border-border bg-surface px-4 py-3 text-sm text-foreground/85">
-            {hit.origin}
+            This realm is ready on the mesh. Content will open here in a future
+            release.
           </p>
           <button
             type="button"
             className="mt-8 rounded-full border border-border px-5 py-2 text-sm hover:bg-surface-2"
-            onClick={() => onGo("settings")}
+            onClick={() => onGo("home")}
           >
-            Edit names
+            Home
           </button>
         </div>
       );
@@ -79,9 +79,9 @@ export function Viewport({
           <p className="mono text-[0.65rem] tracking-[0.25em] text-muted uppercase">
             grid://{hit.label}.grid
           </p>
-          <h1 className="mt-4 text-2xl font-thin">Gateway</h1>
-          <p className="mono mt-6 break-all rounded-xl border border-border bg-surface px-4 py-3 text-sm text-foreground/85">
-            {hit.url}
+          <h1 className="mt-4 text-2xl font-thin">{hit.label}</h1>
+          <p className="mt-3 max-w-md text-foreground/55">
+            Reaching this realm through the mesh.
           </p>
         </div>
       );
@@ -89,15 +89,12 @@ export function Viewport({
       return (
         <div className="flex min-h-full flex-col items-center justify-center px-6 py-16 text-center">
           <p className="mono text-[0.65rem] tracking-[0.25em] text-chip-legacy uppercase">
-            Legacy web
+            Outside the mesh
           </p>
-          <h1 className="mt-4 text-2xl font-thin">https is secondary</h1>
+          <h1 className="mt-4 text-2xl font-thin">Not a realm</h1>
           <p className="mt-3 max-w-md text-foreground/55">
-            MESH defaults to grid://. Full legacy rendering is optional —
-            open this URL in a system browser if needed.
-          </p>
-          <p className="mono mt-6 max-w-lg break-all rounded-xl border border-border bg-surface px-4 py-3 text-sm text-foreground/85">
-            {hit.url}
+            MESH is for grid:// realms. Open web pages in your system browser if
+            needed.
           </p>
           <button
             type="button"
@@ -141,8 +138,7 @@ function MeshCompute({
       </p>
       <h1 className="mt-4 text-3xl font-thin tracking-wide">{hit.name}</h1>
       <p className="mt-3 max-w-md text-foreground/55">
-        Resolved from the public compute registry on grid-compute.com. No host
-        IPs — capacity only.
+        Found on the public mesh. Capacity only — no host details.
       </p>
 
       <div className="mt-8 grid w-full max-w-md grid-cols-2 gap-3 text-left">
@@ -154,14 +150,6 @@ function MeshCompute({
         />
         <Meta label="Visibility" value={hit.visibility} />
         <Meta label="Class" value={hit.class} />
-        <Meta label="Backend" value={hit.backend} />
-        <Meta label="Node" value={hit.nodeId.slice(0, 14)} mono />
-        <div className="col-span-2 rounded-xl border border-border bg-surface px-4 py-3">
-          <p className="mono text-[0.6rem] tracking-wider text-dim uppercase">
-            Image
-          </p>
-          <p className="mono mt-1 break-all text-sm text-foreground/80">{hit.image}</p>
-        </div>
       </div>
 
       <div className="mt-10 flex flex-wrap justify-center gap-3">
@@ -183,9 +171,8 @@ function MeshCompute({
 
       {!available && (
         <p className="mono mt-8 max-w-sm text-[0.7rem] text-dim">
-          This compute is registered but not currently available. Hosts refresh
-          capacity every few minutes while running{" "}
-          <span className="text-foreground/55">grid host</span>.
+          This compute is registered but not currently available. Capacity
+          refreshes while the host is running.
         </p>
       )}
     </div>

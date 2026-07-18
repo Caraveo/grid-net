@@ -79,21 +79,6 @@ grid://x.grid  →  grid://x.grid/`}
 
         <div>
           <h2 className="text-sm tracking-widest text-foreground/90 uppercase">
-            Local names
-          </h2>
-          <p className="mt-2">
-            Map computes in{" "}
-            <code className="mono text-foreground/80">~/.grid/browser/names.toml</code>:
-          </p>
-          <pre className="mono mt-3 overflow-x-auto rounded-xl border border-border bg-surface p-4 text-sm text-foreground/85">
-{`[names]
-x = "http://127.0.0.1:8080"
-garage = "https://example.com"`}
-          </pre>
-        </div>
-
-        <div>
-          <h2 className="text-sm tracking-widest text-foreground/90 uppercase">
             CLI
           </h2>
           <p className="mt-2">

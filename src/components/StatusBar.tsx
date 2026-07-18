@@ -44,9 +44,7 @@ export function StatusBar({
     >
       <div className="mono flex min-w-0 items-center gap-3 text-[0.6rem] tracking-wider text-dim uppercase">
         <span className="truncate">{resolverLabel(hit)}</span>
-        {status?.gateway && (
-          <span className="hidden truncate sm:inline">gateway on</span>
-        )}
+
       </div>
       <div className="mono flex shrink-0 items-center gap-3 text-[0.6rem] tracking-wider text-dim uppercase">
         <span>phase {phase ?? "1"}</span>

@@ -19,13 +19,10 @@ export function Status({ peerCount, computeCount, phase }: Props) {
     ["Product", status?.product ?? "MESH"],
     ["Version", status?.version ?? "—"],
     ["Default scheme", status?.defaultScheme ?? "grid"],
-    ["Registry", status?.registryUrl ?? "https://grid-compute.com"],
-    ["Names file", status?.namesPath ?? "~/.grid/browser/names.toml"],
-    ["Local names", String(status?.nameCount ?? 0)],
-    ["Gateway", status?.gateway ?? "(none)"],
+    ["Registry", "grid-compute.com"],
     ["Mesh phase", phase ?? "1"],
-    ["Peers (last fetch)", peerCount != null ? String(peerCount) : "—"],
-    ["Computes (registry)", computeCount != null ? String(computeCount) : "—"],
+    ["Peers", peerCount != null ? String(peerCount) : "—"],
+    ["Computes", computeCount != null ? String(computeCount) : "—"],
   ];
 
   return (
@@ -35,7 +32,7 @@ export function Status({ peerCount, computeCount, phase }: Props) {
       </p>
       <h1 className="mt-3 text-3xl font-thin tracking-wide">Status</h1>
       <p className="mt-3 text-muted">
-        Browser identity and mesh linkage. Location-only registry — no endpoints.
+        Browser identity and mesh linkage.
       </p>
 
       <dl className="mt-10 divide-y divide-border rounded-xl border border-border bg-surface">

@@ -66,6 +66,7 @@ Same mental model as the CLI: `grid launch x` ↔ browser `x`.
 | Name | Purpose |
 |------|---------|
 | `home.grid` | Start page |
+| `grid.grid` | Public site → [grid-compute.com](https://grid-compute.com/) (“Soon…”) |
 | `registry.grid` | Public **computes** + mesh peers (grid-compute.com) |
 | `status.grid` | Browser + mesh status |
 | `help.grid` | How `grid://` works |
