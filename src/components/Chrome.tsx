@@ -113,13 +113,13 @@ export function Chrome({
 
       <Omnibox displayUrl={displayUrl} loading={loading} onNavigate={onNavigate} />
 
-      {/* GRID light wallet balance (click → popup) */}
-      <LightWallet />
-
-      <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-
-      <div className="mono hidden shrink-0 text-[0.6rem] tracking-[0.2em] text-dim uppercase sm:block">
-        MESH
+      <div className="titlebar-no-drag flex shrink-0 items-center gap-1.5" data-no-drag>
+        {/* GRID light wallet — balance chip, click for send/receive */}
+        <LightWallet />
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        <div className="mono hidden text-[0.6rem] tracking-[0.2em] text-dim uppercase sm:block">
+          MESH
+        </div>
       </div>
     </header>
   );

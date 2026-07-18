@@ -222,13 +222,17 @@ export function LightWallet() {
           setErr(null);
           setPanel("main");
         }}
-        className="titlebar-no-drag flex h-8 min-w-[3.25rem] items-center justify-center gap-1 rounded-full border border-border bg-surface px-2.5 mono text-[0.7rem] tabular-nums tracking-wide text-foreground/90 transition hover:border-foreground/30 hover:bg-surface-2"
-        title="GRID light wallet"
-        aria-label="GRID balance"
+        className="titlebar-no-drag flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-full border border-foreground/25 bg-surface px-2.5 mono text-[0.7rem] tabular-nums tracking-wide text-foreground transition hover:border-foreground/50 hover:bg-surface-2"
+        title="GRID light wallet — send & receive"
+        aria-label="GRID light wallet balance"
         aria-expanded={open}
       >
-        <span className="text-dim">⬡</span>
-        <span>{balanceLabel}</span>
+        <span className="text-[0.55rem] font-semibold tracking-[0.14em] text-dim uppercase">
+          GRID
+        </span>
+        <span className="min-w-[2.25rem] text-right font-semibold">
+          {balanceLabel === "—" ? "0" : balanceLabel}
+        </span>
       </button>
 
       {open && (
