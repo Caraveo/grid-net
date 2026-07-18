@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- GRID mark — explicit colors for browser tabs -->
+  <style>
+    .g-stroke { stroke: #0a0a0a; }
+    .g-fill { fill: #0a0a0a; }
+    @media (prefers-color-scheme: dark) {
+      .g-stroke { stroke: #ffffff; }
+      .g-fill { fill: #ffffff; }
+    }
+  </style>
+  <path
+    class="g-stroke"
+    d="M16 3.5 L28.5 16 L16 28.5 L3.5 16 Z"
+    stroke-width="1.25"
+    stroke-linejoin="miter"
+  />
+  <rect class="g-fill" x="13.5" y="13.5" width="5" height="5" />
+</svg>

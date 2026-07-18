@@ -1,7 +1,10 @@
+mod badges;
 mod commands;
+mod light_wallet;
 mod names;
 mod registry;
 mod resolve;
+mod term;
 mod url;
 
 use tauri::{Emitter, Manager};
@@ -90,8 +93,19 @@ pub fn run() {
             commands::list_names,
             commands::set_name,
             commands::registry_snapshot,
+            commands::realm_badges,
             commands::list_computes,
             commands::browser_status,
+            commands::list_terms,
+            commands::register_term,
+            commands::unregister_term,
+            commands::parse_term,
+            commands::detect_term,
+            light_wallet::light_wallet_info,
+            light_wallet::light_wallet_load,
+            light_wallet::light_wallet_save,
+            light_wallet::light_wallet_wipe,
+            light_wallet::light_wallet_reveal,
         ])
         .run(tauri::generate_context!())
         .expect("error while running MESH browser");

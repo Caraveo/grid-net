@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { LightWallet } from "./LightWallet";
 import { Omnibox } from "./Omnibox";
 import { ThemeToggle } from "./ThemeToggle";
 import type { Theme } from "../lib/theme";
@@ -111,6 +112,9 @@ export function Chrome({
       </div>
 
       <Omnibox displayUrl={displayUrl} loading={loading} onNavigate={onNavigate} />
+
+      {/* GRID light wallet balance (click → popup) */}
+      <LightWallet />
 
       <ThemeToggle theme={theme} onToggle={onToggleTheme} />
 
