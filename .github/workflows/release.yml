@@ -1,0 +1,80 @@
+name: Release Mesh
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.asset }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            asset: macOS-arm64
+          - os: macos-15-intel
+            asset: macOS-x86_64
+          - os: ubuntu-24.04
+            asset: Linux-x86_64
+          - os: windows-2022
+            asset: Windows-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install Linux GUI dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Build Mesh
+        run: npm run tauri:build
+      - name: Collect packages
+        shell: bash
+        run: |
+          mkdir -p release-assets
+          bundle="src-tauri/target/release/bundle"
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            find "$bundle" -type f -name '*.dmg' -exec cp {} "release-assets/MESH-${{ matrix.asset }}.dmg" \;
+            app="$(find "$bundle" -type d -name '*.app' -print -quit)"
+            if [[ -n "$app" ]]; then ditto -c -k --sequesterRsrc --keepParent "$app" "release-assets/MESH-${{ matrix.asset }}.app.zip"; fi
+          elif [[ "${{ runner.os }}" == "Windows" ]]; then
+            find "$bundle" -type f -name '*.exe' -exec cp {} release-assets/MESH-Windows-x86_64-setup.exe \;
+            find "$bundle" -type f -name '*.msi' -exec cp {} release-assets/MESH-Windows-x86_64.msi \;
+          else
+            find "$bundle" -type f -name '*.AppImage' -exec cp {} release-assets/MESH-Linux-x86_64.AppImage \;
+            find "$bundle" -type f -name '*.deb' -exec cp {} release-assets/MESH-Linux-x86_64.deb \;
+          fi
+          test -n "$(find release-assets -type f -print -quit)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: release-assets/*
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Create checksums
+        working-directory: release-assets
+        run: sha256sum * > SHA256SUMS
+      - uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          generate_release_notes: true
+          files: release-assets/*

@@ -1,8 +1,8 @@
 {
   "name": "grid-net",
   "private": true,
-  "version": "0.2.0",
-  "description": "MESH \u2014 cross-platform browser for grid://",
+  "version": "0.2.24",
+  "description": "MESH — cross-platform browser for grid://",
   "type": "module",
   "scripts": {
     "dev": "vite",
